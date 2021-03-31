@@ -44,7 +44,7 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
         CoroutineScope(Dispatchers.IO).launch {
             Thread.sleep(2000)
 
-            (requireContext() as Activity).runOnUiThread {
+            activity?.runOnUiThread {
                 removeLoading()
 
                 mToast("Sign In successfully!")
