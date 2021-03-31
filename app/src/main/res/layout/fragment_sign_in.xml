@@ -14,13 +14,13 @@
         android:text="Login Fragment"
         android:textColor="@color/black"
         android:textSize="26sp"
-        app:layout_constraintBottom_toTopOf="@+id/btn"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/btn"
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -30,11 +30,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/containerEmail"
+            android:id="@+id/textInputLayoutEmail"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
+            app:endIconMode="clear_text"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -45,11 +46,12 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/containerPassword"
+            android:id="@+id/textInputLayoutPassword"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
+            app:endIconMode="password_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -72,6 +74,7 @@
                 app:layout_constraintLeft_toLeftOf="parent" />
 
             <TextView
+                android:id="@+id/tvForgotPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -81,6 +84,7 @@
                 app:layout_constraintTop_toTopOf="@+id/checkBox" />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <Button
+            android:id="@+id/btnSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Sign in"/>
@@ -99,18 +103,18 @@
         android:layout_height="0.5dp"
         android:background="@color/black"
         android:layout_marginEnd="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvSignUp"
-        app:layout_constraintEnd_toStartOf="@+id/tvSignUp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvOr"
+        app:layout_constraintEnd_toStartOf="@+id/tvOr"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
     <TextView
-        android:id="@+id/tvSignUp"
+        android:id="@+id/tvOr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="OR"
         app:layout_constraintEnd_toStartOf="@+id/viewRight"
         app:layout_constraintStart_toEndOf="@+id/viewLeft"
-        app:layout_constraintTop_toBottomOf="@+id/btn"/>
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
 
     <View
         android:id="@+id/viewRight"
@@ -118,32 +122,33 @@
         android:layout_height="0.5dp"
         android:background="@color/black"
         android:layout_marginStart="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvSignUp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvOr"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvSignUp"
-        app:layout_constraintTop_toBottomOf="@+id/btn" />
+        app:layout_constraintStart_toEndOf="@+id/tvOr"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnSignInFb"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
         android:text="Sign in with Facebook"
-        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintEnd_toStartOf="@+id/btnSignInGoogle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSignUp" />
+        app:layout_constraintTop_toBottomOf="@+id/tvOr" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnSignInGoogle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:text="Sign in with Google"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/tvSignUp" />
+        app:layout_constraintStart_toEndOf="@+id/btnSignInFb"
+        app:layout_constraintTop_toBottomOf="@+id/tvOr" />
 
     <TextView
+        android:id="@+id/tvSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
