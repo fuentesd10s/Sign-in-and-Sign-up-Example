@@ -1,7 +1,8 @@
-package com.fuentescreations.signinandsignupsample
+package com.fuentescreations.signinandsignupsample.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.fuentescreations.signinandsignupsample.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
