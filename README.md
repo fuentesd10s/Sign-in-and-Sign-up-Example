@@ -7,6 +7,7 @@ This project is a 'Sign In', 'Sign Up' and 'Forgot Password' screens example usi
 ## Some features used:
 - Fragments
 - Navigation component
+- Room
 - Coroutines
 - ConstraintLayout, LinearLayout
 - Material Design
