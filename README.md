@@ -2,6 +2,8 @@
 
 This project is a 'Sign In', 'Sign Up' and 'Forgot Password' screens example using respectives methods to simulate a real experience.
 
+![screenshot](https://user-images.githubusercontent.com/67812722/113373719-de7fb200-9341-11eb-9de2-54b634617ae4.png)
+
 ## Some features used:
 - Fragments
 - Navigation component
