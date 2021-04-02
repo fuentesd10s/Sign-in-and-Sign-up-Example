@@ -24,6 +24,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_signInFragment_to_loggedFragment"
+            app:destination="@id/loggedFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -37,6 +40,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_signUpFragment_to_loggedFragment"
+            app:destination="@id/loggedFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
@@ -47,4 +53,9 @@
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"/>
+    <fragment
+        android:id="@+id/loggedFragment"
+        android:name="com.fuentescreations.signinandsignupsample.ui.fragments.LoggedFragment"
+        android:label="fragment_logged"
+        tools:layout="@layout/fragment_logged" />
 </navigation>

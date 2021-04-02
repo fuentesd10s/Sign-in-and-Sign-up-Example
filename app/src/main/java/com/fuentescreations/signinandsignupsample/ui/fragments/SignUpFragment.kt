@@ -7,6 +7,9 @@ import androidx.navigation.fragment.findNavController
 import com.fuentescreations.signinandsignupsample.R
 import com.fuentescreations.signinandsignupsample.databinding.FragmentSignUpBinding
 import com.fuentescreations.signinandsignupsample.ui.application.BaseFragment
+import com.fuentescreations.signinandsignupsample.ui.data.local.AppDatabase
+import com.fuentescreations.signinandsignupsample.ui.data.local.UserDao
+import com.fuentescreations.signinandsignupsample.ui.data.models.UserModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,6 +17,7 @@ import kotlinx.coroutines.launch
 class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
 
     private lateinit var binding: FragmentSignUpBinding
+    private lateinit var userDao: UserDao
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -22,10 +26,14 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
         binding.btnSignUp.setOnClickListener { if (checkFields()) signUp() }
         binding.tvSignIn.setOnClickListener { activity?.onBackPressed() }
 
+        userDao= AppDatabase.getInstance(requireContext()).userDao()
     }
 
     private fun signUp() {
         showLoading()
+
+        val email = binding.etEmail.text.toString()
+        val password = binding.etPassword.text.toString()
 
         CoroutineScope(Dispatchers.IO).launch {
             Thread.sleep(2000)
@@ -33,7 +41,8 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
             activity?.runOnUiThread {
                 removeLoading()
 
-                mToast("Sign Up successfully!")
+//                mToast("Sign Up successfully!")
+                registerUser(email, password)
             }
         }
     }
@@ -61,6 +70,12 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
         }
 
         return true
+    }
+
+    private fun registerUser(email:String,password:String){
+        userDao.insertUser(UserModel(0,email,password))
+
+        findNavController().navigate(R.id.action_signUpFragment_to_loggedFragment)
     }
 
     private fun showLoading() {

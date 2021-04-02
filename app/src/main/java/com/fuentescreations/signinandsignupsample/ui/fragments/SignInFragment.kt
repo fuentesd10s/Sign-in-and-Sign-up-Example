@@ -1,15 +1,13 @@
 package com.fuentescreations.signinandsignupsample.ui.fragments
 
-import android.app.Activity
 import android.os.Bundle
-import android.text.TextUtils
-import androidx.fragment.app.Fragment
 import android.view.View
-import androidx.annotation.MainThread
 import androidx.navigation.fragment.findNavController
 import com.fuentescreations.signinandsignupsample.R
 import com.fuentescreations.signinandsignupsample.databinding.FragmentSignInBinding
 import com.fuentescreations.signinandsignupsample.ui.application.BaseFragment
+import com.fuentescreations.signinandsignupsample.ui.data.local.AppDatabase
+import com.fuentescreations.signinandsignupsample.ui.data.local.UserDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,10 +15,13 @@ import kotlinx.coroutines.launch
 class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
 
     private lateinit var binding: FragmentSignInBinding
+    private lateinit var userDao: UserDao
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSignInBinding.bind(view)
+
+        userDao= AppDatabase.getInstance(requireContext()).userDao()
 
         binding.btnSignIn.setOnClickListener { if (checkFields()) signIn() }
         binding.btnSignInFb.setOnClickListener { signInWithFb() }
@@ -41,13 +42,20 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
     private fun signIn() {
         showLoading()
 
+        val email = binding.etEmail.text.toString()
+        val password = binding.etPassword.text.toString()
+
         CoroutineScope(Dispatchers.IO).launch {
             Thread.sleep(2000)
 
             activity?.runOnUiThread {
-                removeLoading()
 
-                mToast("Sign In successfully!")
+                if (loginUser(email, password))
+                    findNavController().navigate(R.id.action_signInFragment_to_loggedFragment)
+                else
+                    mToast("Incorrect email or password")
+
+                removeLoading()
             }
         }
     }
@@ -69,6 +77,17 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
         }
 
         return true
+    }
+
+    private fun loginUser(email:String,password:String): Boolean{
+
+//        userDao.getAllUsers().forEach {
+//            if (it.email==email && it.password==password){
+//                findNavController().navigate(R.id.action_signInFragment_to_loggedFragment)
+//            }
+//        }
+
+        return userDao.getUser(email,password) != null
     }
 
     private fun showLoading() {
