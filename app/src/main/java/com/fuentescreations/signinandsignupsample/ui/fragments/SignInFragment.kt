@@ -21,7 +21,7 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSignInBinding.bind(view)
 
-        userDao= AppDatabase.getInstance(requireContext()).userDao()
+        userDao = AppDatabase.getInstance(requireContext()).userDao()
 
         binding.btnSignIn.setOnClickListener { if (checkFields()) signIn() }
         binding.btnSignInFb.setOnClickListener { signInWithFb() }
@@ -48,11 +48,12 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
         CoroutineScope(Dispatchers.IO).launch {
             Thread.sleep(2000)
 
-            activity?.runOnUiThread {
+            requireActivity().runOnUiThread {
 
-                if (loginUser(email, password))
+                if (loginUser(email, password)) {
                     findNavController().navigate(R.id.action_signInFragment_to_loggedFragment)
-                else
+                    rememberUser()
+                } else
                     mToast("Incorrect email or password")
 
                 removeLoading()
@@ -79,16 +80,9 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
         return true
     }
 
-    private fun loginUser(email:String,password:String): Boolean{
+    private fun loginUser(email: String, password: String): Boolean =
+        userDao.getUser(email, password) != null
 
-//        userDao.getAllUsers().forEach {
-//            if (it.email==email && it.password==password){
-//                findNavController().navigate(R.id.action_signInFragment_to_loggedFragment)
-//            }
-//        }
-
-        return userDao.getUser(email,password) != null
-    }
 
     private fun showLoading() {
         binding.progressBar.visibility = View.VISIBLE

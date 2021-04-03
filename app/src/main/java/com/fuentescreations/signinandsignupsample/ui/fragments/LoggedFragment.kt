@@ -2,6 +2,7 @@ package com.fuentescreations.signinandsignupsample.ui.fragments
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.fuentescreations.signinandsignupsample.R
 import com.fuentescreations.signinandsignupsample.databinding.FragmentLoggedBinding
 import com.fuentescreations.signinandsignupsample.ui.adapters.ItemUserAdapter
@@ -22,7 +23,9 @@ class LoggedFragment : BaseFragment(R.layout.fragment_logged) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentLoggedBinding.bind(view)
 
-        userDao=AppDatabase.getInstance(requireContext()).userDao()
+        binding.btnLogout.setOnClickListener { logout() }
+
+        userDao = AppDatabase.getInstance(requireContext()).userDao()
         userModelList.addAll(userDao.getAllUsers())
 
         setupRv()
@@ -31,5 +34,17 @@ class LoggedFragment : BaseFragment(R.layout.fragment_logged) {
     private fun setupRv() {
         adapter = ItemUserAdapter(userModelList)
         binding.rvUsers.adapter = adapter
+    }
+
+    private fun logout() {
+        val mPref = requireActivity().getSharedPreferences("GENERAL", 0)
+
+        val editor = mPref.edit()
+
+        editor.putBoolean("USER_LOGGED", false)
+
+        editor.apply()
+
+        requireActivity().onBackPressed()
     }
 }

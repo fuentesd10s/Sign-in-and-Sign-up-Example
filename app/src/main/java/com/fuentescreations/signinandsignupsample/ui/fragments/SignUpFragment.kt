@@ -26,7 +26,7 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
         binding.btnSignUp.setOnClickListener { if (checkFields()) signUp() }
         binding.tvSignIn.setOnClickListener { activity?.onBackPressed() }
 
-        userDao= AppDatabase.getInstance(requireContext()).userDao()
+        userDao = AppDatabase.getInstance(requireContext()).userDao()
     }
 
     private fun signUp() {
@@ -38,11 +38,12 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
         CoroutineScope(Dispatchers.IO).launch {
             Thread.sleep(2000)
 
-            activity?.runOnUiThread {
-                removeLoading()
-
-//                mToast("Sign Up successfully!")
+            requireActivity().runOnUiThread {
                 registerUser(email, password)
+
+                rememberUser()
+
+                removeLoading()
             }
         }
     }
@@ -72,8 +73,8 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
         return true
     }
 
-    private fun registerUser(email:String,password:String){
-        userDao.insertUser(UserModel(0,email,password))
+    private fun registerUser(email: String, password: String) {
+        userDao.insertUser(UserModel(0, email, password))
 
         findNavController().navigate(R.id.action_signUpFragment_to_loggedFragment)
     }
