@@ -43,57 +43,41 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
         binding.tvSignUp.setOnClickListener { findNavController().navigate(R.id.action_signInFragment_to_signUpFragment) }
     }
 
-    private fun signInWithGoogle() {
-        mToast("Sign In with Google")
-    }
+    private fun signInWithGoogle() { mToast("Sign In with Google") }
 
-    private fun signInWithFb() {
-        mToast("Sign In with Facebook")
-    }
+    private fun signInWithFb() { mToast("Sign In with Facebook") }
 
     private fun signIn() {
-        showLoading()
 
         val email = binding.etEmail.text.toString()
         val password = binding.etPassword.text.toString()
 
-//        CoroutineScope(Dispatchers.IO).launch {
-//            Thread.sleep(2000)
-//
-//            requireActivity().runOnUiThread {
-//
-//                if (loginUser(email, password)) {
-//                    findNavController().navigate(R.id.action_signInFragment_to_loggedFragment)
-//                    rememberUser()
-//                } else
-//                    mToast("Incorrect email or password")
-//
-//                removeLoading()
-//            }
-//        }
-
         authViewModel.signIn(email, password).observe(viewLifecycleOwner, Observer {
 
-            when (it){
-                is  ResultState.Loading ->{
+            when (it) {
+                is ResultState.Loading -> {
                     showLoading()
                 }
-                is  ResultState.Success -> {
-                    if (it.data){
-                    findNavController().navigate(R.id.action_signInFragment_to_loggedFragment)
-                    rememberUser()
-                    removeLoading()
-                    }else{
+                is ResultState.Success -> {
+
+                    if (it.data) {
+                        findNavController().navigate(R.id.action_signInFragment_to_loggedFragment)
+
+                        rememberUser()
+
+                        removeLoading()
+                    } else {
                         mToast("Incorrect email or password")
 
                         removeLoading()
                     }
-                }
-                is  ResultState.Failure ->{
-                    mToast("Incorrect email or password")
 
-                    removeLoading()
                 }
+//                is  ResultState.Failure ->{
+//                    mToast("Incorrect email or password")
+//
+//                    removeLoading()
+//                }
             }
         })
     }

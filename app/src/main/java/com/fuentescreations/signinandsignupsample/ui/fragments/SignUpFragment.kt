@@ -2,13 +2,20 @@ package com.fuentescreations.signinandsignupsample.ui.fragments
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.fuentescreations.signinandsignupsample.R
 import com.fuentescreations.signinandsignupsample.databinding.FragmentSignUpBinding
 import com.fuentescreations.signinandsignupsample.application.BaseFragment
+import com.fuentescreations.signinandsignupsample.application.ResultState
 import com.fuentescreations.signinandsignupsample.data.local.AppDatabase
+import com.fuentescreations.signinandsignupsample.data.local.AuthDataSource
 import com.fuentescreations.signinandsignupsample.data.local.UserDao
 import com.fuentescreations.signinandsignupsample.data.models.UserModel
+import com.fuentescreations.signinandsignupsample.domain.singin.AuthRepoImpl
+import com.fuentescreations.signinandsignupsample.viewmodels.AuthViewModel
+import com.fuentescreations.signinandsignupsample.viewmodels.AuthViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,7 +23,14 @@ import kotlinx.coroutines.launch
 class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
 
     private lateinit var binding: FragmentSignUpBinding
-    private lateinit var userDao: UserDao
+
+    private val authViewModel by viewModels<AuthViewModel> {
+        AuthViewModelFactory(
+            AuthRepoImpl(
+                AuthDataSource(AppDatabase.getInstance(requireContext()).userDao())
+            )
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -24,27 +38,14 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
 
         binding.btnSignUp.setOnClickListener { if (checkFields()) signUp() }
         binding.tvSignIn.setOnClickListener { activity?.onBackPressed() }
-
-        userDao = AppDatabase.getInstance(requireContext()).userDao()
     }
 
     private fun signUp() {
-        showLoading()
 
         val email = binding.etEmail.text.toString()
         val password = binding.etPassword.text.toString()
 
-        CoroutineScope(Dispatchers.IO).launch {
-            Thread.sleep(2000)
-
-            requireActivity().runOnUiThread {
-                removeLoading()
-
-                registerUser(email, password)
-
-                rememberUser()
-            }
-        }
+        registerUser(email, password)
     }
 
     private fun checkFields(): Boolean {
@@ -73,9 +74,35 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
     }
 
     private fun registerUser(email: String, password: String) {
-        userDao.insertUser(UserModel(0, email, password))
 
-        findNavController().navigate(R.id.action_signUpFragment_to_loggedFragment)
+        authViewModel.signUp(email, password).observe(viewLifecycleOwner, Observer {
+
+            when (it) {
+                is ResultState.Loading -> {
+                    showLoading()
+                }
+                is ResultState.Success -> {
+
+                    if (it.data) {
+                        activity?.onBackPressed()
+
+                        rememberUser()
+
+                        removeLoading()
+                    } else {
+                        mToast("Incorrect email or password")
+
+                        removeLoading()
+                    }
+
+                }
+//                is  ResultState.Failure ->{
+//                    mToast("Incorrect email or password")
+//
+//                    removeLoading()
+//                }
+            }
+        })
     }
 
     private fun showLoading() {

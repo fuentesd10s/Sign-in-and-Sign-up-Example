@@ -13,21 +13,13 @@ class AuthViewModel(private val repo: AuthRepo) : ViewModel() {
     fun signIn(email: String, password: String) = liveData(Dispatchers.IO) {
         emit(ResultState.Loading())
 
-        try {
-            emit(ResultState.Success(repo.signIn(email, password)))
-        } catch (e: Exception) {
-            emit(ResultState.Failure(e))
-        }
+        emit(ResultState.Success(repo.signIn(email, password)))
     }
 
     fun signUp(email: String, password: String) = liveData(Dispatchers.IO) {
         emit(ResultState.Loading())
 
-        try {
-            emit(ResultState.Success(repo.signUp(email, password)))
-        } catch (e: Exception) {
-            emit(ResultState.Failure(e))
-        }
+        emit(ResultState.Success(repo.signUp(email, password)))
     }
 }
 
