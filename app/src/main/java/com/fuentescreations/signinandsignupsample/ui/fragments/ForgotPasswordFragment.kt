@@ -2,11 +2,10 @@ package com.fuentescreations.signinandsignupsample.ui.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
 import com.fuentescreations.signinandsignupsample.R
 import com.fuentescreations.signinandsignupsample.databinding.FragmentForgotPasswordBinding
-import com.fuentescreations.signinandsignupsample.ui.application.BaseFragment
+import com.fuentescreations.signinandsignupsample.application.BaseFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

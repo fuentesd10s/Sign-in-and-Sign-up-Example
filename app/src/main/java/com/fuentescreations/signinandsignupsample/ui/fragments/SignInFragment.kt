@@ -2,12 +2,19 @@ package com.fuentescreations.signinandsignupsample.ui.fragments
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.fuentescreations.signinandsignupsample.R
 import com.fuentescreations.signinandsignupsample.databinding.FragmentSignInBinding
-import com.fuentescreations.signinandsignupsample.ui.application.BaseFragment
-import com.fuentescreations.signinandsignupsample.ui.data.local.AppDatabase
-import com.fuentescreations.signinandsignupsample.ui.data.local.UserDao
+import com.fuentescreations.signinandsignupsample.application.BaseFragment
+import com.fuentescreations.signinandsignupsample.application.ResultState
+import com.fuentescreations.signinandsignupsample.data.local.AppDatabase
+import com.fuentescreations.signinandsignupsample.data.local.AuthDataSource
+import com.fuentescreations.signinandsignupsample.data.local.UserDao
+import com.fuentescreations.signinandsignupsample.domain.singin.AuthRepoImpl
+import com.fuentescreations.signinandsignupsample.viewmodels.AuthViewModel
+import com.fuentescreations.signinandsignupsample.viewmodels.AuthViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,13 +22,18 @@ import kotlinx.coroutines.launch
 class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
 
     private lateinit var binding: FragmentSignInBinding
-    private lateinit var userDao: UserDao
+
+    private val authViewModel by viewModels<AuthViewModel> {
+        AuthViewModelFactory(
+            AuthRepoImpl(
+                AuthDataSource(AppDatabase.getInstance(requireContext()).userDao())
+            )
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSignInBinding.bind(view)
-
-        userDao = AppDatabase.getInstance(requireContext()).userDao()
 
         binding.btnSignIn.setOnClickListener { if (checkFields()) signIn() }
         binding.btnSignInFb.setOnClickListener { signInWithFb() }
@@ -45,20 +57,45 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
         val email = binding.etEmail.text.toString()
         val password = binding.etPassword.text.toString()
 
-        CoroutineScope(Dispatchers.IO).launch {
-            Thread.sleep(2000)
+//        CoroutineScope(Dispatchers.IO).launch {
+//            Thread.sleep(2000)
+//
+//            requireActivity().runOnUiThread {
+//
+//                if (loginUser(email, password)) {
+//                    findNavController().navigate(R.id.action_signInFragment_to_loggedFragment)
+//                    rememberUser()
+//                } else
+//                    mToast("Incorrect email or password")
+//
+//                removeLoading()
+//            }
+//        }
 
-            requireActivity().runOnUiThread {
+        authViewModel.signIn(email, password).observe(viewLifecycleOwner, Observer {
 
-                if (loginUser(email, password)) {
+            when (it){
+                is  ResultState.Loading ->{
+                    showLoading()
+                }
+                is  ResultState.Success -> {
+                    if (it.data){
                     findNavController().navigate(R.id.action_signInFragment_to_loggedFragment)
                     rememberUser()
-                } else
+                    removeLoading()
+                    }else{
+                        mToast("Incorrect email or password")
+
+                        removeLoading()
+                    }
+                }
+                is  ResultState.Failure ->{
                     mToast("Incorrect email or password")
 
-                removeLoading()
+                    removeLoading()
+                }
             }
-        }
+        })
     }
 
     private fun checkFields(): Boolean {
@@ -79,10 +116,6 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
 
         return true
     }
-
-    private fun loginUser(email: String, password: String): Boolean =
-        userDao.getUser(email, password) != null
-
 
     private fun showLoading() {
         binding.progressBar.visibility = View.VISIBLE

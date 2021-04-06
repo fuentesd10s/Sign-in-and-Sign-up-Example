@@ -1,4 +1,4 @@
-package com.fuentescreations.signinandsignupsample.ui.application
+package com.fuentescreations.signinandsignupsample.application
 
 import android.os.Bundle
 import android.view.LayoutInflater

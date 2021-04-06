@@ -2,14 +2,13 @@ package com.fuentescreations.signinandsignupsample.ui.fragments
 
 import android.os.Bundle
 import android.view.View
-import androidx.navigation.fragment.findNavController
 import com.fuentescreations.signinandsignupsample.R
 import com.fuentescreations.signinandsignupsample.databinding.FragmentLoggedBinding
-import com.fuentescreations.signinandsignupsample.ui.adapters.ItemUserAdapter
-import com.fuentescreations.signinandsignupsample.ui.application.BaseFragment
-import com.fuentescreations.signinandsignupsample.ui.data.local.AppDatabase
-import com.fuentescreations.signinandsignupsample.ui.data.local.UserDao
-import com.fuentescreations.signinandsignupsample.ui.data.models.UserModel
+import com.fuentescreations.signinandsignupsample.adapters.ItemUserAdapter
+import com.fuentescreations.signinandsignupsample.application.BaseFragment
+import com.fuentescreations.signinandsignupsample.data.local.AppDatabase
+import com.fuentescreations.signinandsignupsample.data.local.UserDao
+import com.fuentescreations.signinandsignupsample.data.models.UserModel
 
 class LoggedFragment : BaseFragment(R.layout.fragment_logged) {
 

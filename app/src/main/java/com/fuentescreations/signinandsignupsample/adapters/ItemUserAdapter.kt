@@ -1,11 +1,11 @@
-package com.fuentescreations.signinandsignupsample.ui.adapters
+package com.fuentescreations.signinandsignupsample.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.fuentescreations.signinandsignupsample.databinding.ItemUserBinding
-import com.fuentescreations.signinandsignupsample.ui.data.models.UserModel
+import com.fuentescreations.signinandsignupsample.data.models.UserModel
 
 class ItemUserAdapter (private val userModelList: List<UserModel>) : RecyclerView.Adapter<ItemUserAdapter.ItemUserViewHolder>(){
 

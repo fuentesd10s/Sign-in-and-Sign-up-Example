@@ -1,7 +1,7 @@
-package com.fuentescreations.signinandsignupsample.ui.data.local
+package com.fuentescreations.signinandsignupsample.data.local
 
 import androidx.room.*
-import com.fuentescreations.signinandsignupsample.ui.data.models.UserModel
+import com.fuentescreations.signinandsignupsample.data.models.UserModel
 
 @Dao
 interface UserDao {

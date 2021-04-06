@@ -1,15 +1,14 @@
 package com.fuentescreations.signinandsignupsample.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.fuentescreations.signinandsignupsample.R
 import com.fuentescreations.signinandsignupsample.databinding.FragmentSignUpBinding
-import com.fuentescreations.signinandsignupsample.ui.application.BaseFragment
-import com.fuentescreations.signinandsignupsample.ui.data.local.AppDatabase
-import com.fuentescreations.signinandsignupsample.ui.data.local.UserDao
-import com.fuentescreations.signinandsignupsample.ui.data.models.UserModel
+import com.fuentescreations.signinandsignupsample.application.BaseFragment
+import com.fuentescreations.signinandsignupsample.data.local.AppDatabase
+import com.fuentescreations.signinandsignupsample.data.local.UserDao
+import com.fuentescreations.signinandsignupsample.data.models.UserModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,11 +38,11 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
             Thread.sleep(2000)
 
             requireActivity().runOnUiThread {
+                removeLoading()
+
                 registerUser(email, password)
 
                 rememberUser()
-
-                removeLoading()
             }
         }
     }

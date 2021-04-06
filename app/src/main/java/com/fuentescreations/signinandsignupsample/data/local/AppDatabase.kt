@@ -1,10 +1,10 @@
-package com.fuentescreations.signinandsignupsample.ui.data.local
+package com.fuentescreations.signinandsignupsample.data.local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.fuentescreations.signinandsignupsample.ui.data.models.UserModel
+import com.fuentescreations.signinandsignupsample.data.models.UserModel
 
 @Database(entities = [UserModel::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {

@@ -1,4 +1,4 @@
-package com.fuentescreations.signinandsignupsample.ui.data.models
+package com.fuentescreations.signinandsignupsample.data.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
